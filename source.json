@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/iamxvbaba/gramsrv-Telegram-iOS",
+  "revision": "16f191d403e3b587578f8f32bae814cce1681853",
+  "bundle_id": "org.blaxygram.mtproto",
+  "endpoint": "193.233.230.31:2398",
+  "signing": "unsigned; external signing with own certificate",
+  "based_on_verified_workflow": "https://github.com/Donate-site/lunagram-ios/actions/runs/37650938564"
+}
