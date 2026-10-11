@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from brand_market import prepare_market
 
 SOURCE_REVISION = '16f191d403e3b587578f8f32bae814cce1681853'
 BUNDLE_ID = 'org.blaxygram.mtproto'
@@ -155,6 +156,7 @@ def prepare(root, assets):
         'images': [{'filename':'Blaxygram.png', 'idiom':'universal', 'platform':'ios', 'size':'1024x1024'}],
         'info': {'author':'xcode', 'version':1}}, indent=2))
     (icon.parent/'Contents.json').write_text('{"info":{"author":"xcode","version":1}}\n')
+    prepare_market(root, assets)
     print('Prepared Blaxygram, DC2 193.233.230.31:2398, ESign container fallback and saved-address migration, with an unsigned device build.')
 
 if __name__ == '__main__':

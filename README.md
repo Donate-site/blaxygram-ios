@@ -9,3 +9,7 @@ The IPA is unsigned. Sign it with your own certificate in ESign before installin
 The source commit is pinned in source.json and the workflow. prepare.py applies all changes with source-shape assertions. Build artifacts include the changes and preparation script. Original source/license notices are retained upstream. No production bot tokens, private RSA keys or user data are included.
 
 Check the Actions tab for the current build status. Local patch application was validated against the pinned upstream source before upload.
+
+The current local revision adds Blaxygment names, destination links, collectible-number and transaction avatars. `brand_market.py` also updates cached localization templates before formatting, preserving protocol identifiers and user text. `Blaxygment.png` is the marketplace avatar; `Blaxygram.png` remains the messenger icon. Run `python validate_prepare.py PATH_TO_PINNED_IOS_CHECKOUT` on Windows to validate patch application and generated localizations; this does not compile the application.
+
+2026-10-11: marketplace patches and generated localization were validated against the pinned source. The GitHub Actions run is the authoritative build status; device runtime still requires validation.

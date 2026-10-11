@@ -21,12 +21,16 @@ with zipfile.ZipFile(ipa) as archive:
     binary = archive.read(executable)
     assert binary[:4] == b'\xcf\xfa\xed\xfe', 'Expected a 64-bit Mach-O binary'
     assert int.from_bytes(binary[4:8], 'little') == 0x100000c, 'Expected ARM64'
+    assert b'Blaxygment' in binary, 'Marketplace branding missing from executable'
+    assert b'blaxygment.blaxygram.duckdns.org' in binary, 'Marketplace destination missing'
     summary = {'name': 'Blaxygram', 'bundle_id': info['CFBundleIdentifier'],
         'version': info['CFBundleShortVersionString'], 'build': info['CFBundleVersion'],
         'platform': info['DTPlatformName'], 'sha256': hashlib.sha256(ipa.read_bytes()).hexdigest(),
         'signing': 'Unsigned; sign with your own certificate in ESign before installing',
         'source': 'https://github.com/iamxvbaba/gramsrv-Telegram-iOS',
         'source_revision': '16f191d403e3b587578f8f32bae814cce1681853',
+        'marketplace': 'Blaxygment',
+        'marketplace_url': 'https://blaxygment.blaxygram.duckdns.org',
         'runtime_tests': 'Not yet tested on an iPhone'}
     ipa.with_suffix('.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary, indent=2))
