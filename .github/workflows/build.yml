@@ -79,7 +79,7 @@ jobs:
           cp source/bazel-bin/Telegram/Telegram.ipa artifacts/Blaxygram.ipa
           python3 builder/verify_ipa.py artifacts/Blaxygram.ipa
           git -C source diff --binary > artifacts/Blaxygram-source-changes.patch
-          cp builder/prepare.py builder/blaxygram-public.pem builder/Blaxygram.png artifacts/
+          cp builder/prepare.py builder/brand_market.py builder/blaxygram-public.pem builder/Blaxygram.png builder/Blaxygment.png artifacts/
 
       - name: Upload IPA for ESign
         uses: actions/upload-artifact@v4
