@@ -44,6 +44,11 @@ def prepare_market(root, assets):
                 return text
             edit(path, transform)
 
+    login_strings = root / 'Telegram/Telegram-iOS/en.lproj/Localizable.strings'
+    edit(login_strings, lambda text: re.sub(
+        r'(?m)^"Login.EnterCodeFragmentText" = ".*";$',
+        '"Login.EnterCodeFragmentText" = "Check **Blaxygment** for the code for **%@**. If Telegram delivery is linked, also check your bot chat.";', text))
+
     # Transform templates before argument interpolation/range calculation.
     # This also handles cached and downloaded language packs without touching
     # usernames, messages, or protocol/localization keys.
