@@ -21,8 +21,14 @@ with zipfile.ZipFile(ipa) as archive:
     binary = archive.read(executable)
     assert binary[:4] == b'\xcf\xfa\xed\xfe', 'Expected a 64-bit Mach-O binary'
     assert int.from_bytes(binary[4:8], 'little') == 0x100000c, 'Expected ARM64'
-    assert b'Blaxygment' in binary, 'Marketplace branding missing from executable'
-    assert b'blaxygment.blaxygram.duckdns.org' in binary, 'Marketplace destination missing'
+    # Bazel puts the UI into a dynamic framework, not the small app launcher.
+    framework = path.removesuffix('Info.plist') + 'Frameworks/TelegramUIFramework.framework/'
+    framework_info = plistlib.loads(archive.read(framework + 'Info.plist'))
+    framework_binary = archive.read(framework + framework_info['CFBundleExecutable'])
+    assert framework_binary[:4] == b'\xcf\xfa\xed\xfe', 'Expected Mach-O UI framework'
+    assert int.from_bytes(framework_binary[4:8], 'little') == 0x100000c, 'Expected ARM64 UI framework'
+    assert b'Blaxygment' in framework_binary, 'Marketplace branding missing from UI framework'
+    assert b'blaxygment.blaxygram.duckdns.org' in framework_binary, 'Marketplace destination missing from UI framework'
     summary = {'name': 'Blaxygram', 'bundle_id': info['CFBundleIdentifier'],
         'version': info['CFBundleShortVersionString'], 'build': info['CFBundleVersion'],
         'platform': info['DTPlatformName'], 'sha256': hashlib.sha256(ipa.read_bytes()).hexdigest(),
