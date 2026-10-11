@@ -74,6 +74,7 @@ jobs:
             --buildNumber="$GITHUB_RUN_NUMBER" 2>&1 | tee ../build.log
 
       - name: Verify and collect IPA
+        id: verify
         run: |
           mkdir -p artifacts
           cp source/bazel-bin/Telegram/Telegram.ipa artifacts/Blaxygram.ipa
@@ -88,6 +89,16 @@ jobs:
           path: artifacts/
           if-no-files-found: error
           retention-days: 14
+          compression-level: 0
+
+      - name: Preserve package for diagnostics if verification fails
+        if: failure() && steps.verify.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Blaxygram-UNVERIFIED-${{ github.run_number }}
+          path: artifacts/
+          if-no-files-found: ignore
+          retention-days: 3
           compression-level: 0
 
       - name: Save build log
