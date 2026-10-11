@@ -69,6 +69,8 @@ static NSString * _Nonnull getSingleIndirect''')
 
     # Retain the resource key used by TL .fragment transaction variants.
     icon = root / 'submodules/TelegramUI/Images.xcassets/Premium/Stars/Fragment.imageset'
+    # actool rejects leftover assets not assigned by the new Contents.json.
+    (icon / 'fragment.pdf').unlink(missing_ok=True)
     shutil.copyfile(assets / 'Blaxygment.png', icon / 'Blaxygment.png')
     (icon / 'Contents.json').write_text(json.dumps({
         'images': [{'filename': 'Blaxygment.png', 'idiom': 'universal'}],

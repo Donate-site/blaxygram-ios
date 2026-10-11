@@ -27,6 +27,7 @@ paths = [
     'submodules/TelegramUI/Components/Stars/StarsAvatarComponent/Sources/StarsAvatarComponent.swift',
     'submodules/TelegramUI/Components/Stars/StarsImageComponent/Sources/StarsImageComponent.swift',
     'submodules/TelegramUI/Images.xcassets/Premium/Stars/Fragment.imageset/Contents.json',
+    'submodules/TelegramUI/Images.xcassets/Premium/Stars/Fragment.imageset/fragment.pdf',
     'submodules/UrlWhitelist/Sources/UrlWhitelist.swift',
     'submodules/TextFormat/Sources/GenerateTextEntities.swift',
     'submodules/StatisticsUI/Sources/TransactionInfoScreen.swift',
@@ -61,6 +62,7 @@ assert 'Withdrawal("Blaxygment")' in (root / 'submodules/StatisticsUI/Sources/Tr
 icon = root / 'submodules/TelegramUI/Images.xcassets/Premium/Stars/Fragment.imageset'
 assert (icon / 'Blaxygment.png').read_bytes() == (assets / 'Blaxygment.png').read_bytes()
 assert json.loads((icon / 'Contents.json').read_text())['images'][0]['filename'] == 'Blaxygment.png'
+assert {p.name for p in icon.iterdir()} == {'Contents.json', 'Blaxygment.png'}, 'Unassigned asset in image set'
 assert '"fragment.com"' not in (root / 'submodules/UrlWhitelist/Sources/UrlWhitelist.swift').read_text()
 report = {
     'source_revision': prepare.SOURCE_REVISION,
