@@ -14,6 +14,12 @@ assets = Path(__file__).resolve().parent
 root = Path(tempfile.mkdtemp(prefix='blaxygram-ios-market-check-'))
 subprocess.run(['git', 'clone', '--shared', '--no-checkout', '--quiet', str(source), str(root)], check=True)
 paths = [
+    'submodules/TelegramPresentationData/Sources/DefaultDayPresentationTheme.swift',
+    'submodules/TelegramPresentationData/Sources/DefaultDarkPresentationTheme.swift',
+    'submodules/TelegramUIPreferences/Sources/MediaAutoDownloadSettings.swift',
+    'submodules/AccountContext/Sources/AccountContext.swift',
+    'submodules/SettingsUI/Sources/Privacy and Security/IncomingMessagePrivacyScreen.swift',
+    'submodules/SettingsUI/Sources/Privacy and Security/PrivacyAndSecurityController.swift',
     '.bazelrc', 'Telegram/BUILD',
     'Telegram/Telegram-iOS/en.lproj/InfoPlist.strings',
     'Telegram/Telegram-iOS/en.lproj/Localizable.strings',
