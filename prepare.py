@@ -8,6 +8,9 @@ from pathlib import Path
 from brand_market import prepare_market
 from paid_messages import prepare_paid_messages
 from interface_polish import prepare_interface
+from channel_comments import prepare_channel_comments
+from gram_wallet import prepare_gram_wallet
+from wallet_experience import prepare_wallet_experience
 
 SOURCE_REVISION = '16f191d403e3b587578f8f32bae814cce1681853'
 BUNDLE_ID = 'org.blaxygram.mtproto'
@@ -161,6 +164,9 @@ def prepare(root, assets):
     prepare_market(root, assets)
     prepare_paid_messages(root)
     prepare_interface(root)
+    prepare_channel_comments(root)
+    prepare_gram_wallet(root, assets)
+    prepare_wallet_experience(root, assets)
     print('Prepared Blaxygram, DC2 193.233.230.31:2398, ESign container fallback and saved-address migration, with an unsigned device build.')
 
 if __name__ == '__main__':

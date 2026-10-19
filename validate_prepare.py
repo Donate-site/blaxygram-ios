@@ -13,7 +13,10 @@ source = Path(sys.argv[1]).resolve()
 assets = Path(__file__).resolve().parent
 root = Path(tempfile.mkdtemp(prefix='blaxygram-ios-market-check-'))
 subprocess.run(['git', 'clone', '--shared', '--no-checkout', '--quiet', str(source), str(root)], check=True)
-paths = [
+from channel_comments import PATHS
+from gram_wallet import PATHS as GRAM_PATHS
+from wallet_experience import PATHS as WALLET_PATHS
+paths = [*PATHS, *GRAM_PATHS, *WALLET_PATHS,
     'submodules/TelegramPresentationData/Sources/DefaultDayPresentationTheme.swift',
     'submodules/TelegramPresentationData/Sources/DefaultDarkPresentationTheme.swift',
     'submodules/TelegramUIPreferences/Sources/MediaAutoDownloadSettings.swift',
