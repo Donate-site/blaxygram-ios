@@ -17,6 +17,8 @@ with zipfile.ZipFile(ipa) as archive:
     assert info['CFBundleIdentifier'] == 'org.blaxygram.mtproto', info['CFBundleIdentifier']
     assert info['CFBundleDisplayName'] == 'Blaxygram'
     assert info['DTPlatformName'] == 'iphoneos', 'Not an iPhone device build'
+    schemes = {scheme for item in info.get('CFBundleURLTypes', []) for scheme in item.get('CFBundleURLSchemes', [])}
+    assert {'blaxygram', 'owpg', 'telesrv'} <= schemes, f'Missing Blaxygram link handlers: {schemes}'
     executable = path.removesuffix('Info.plist') + info['CFBundleExecutable']
     binary = archive.read(executable)
     assert binary[:4] == b'\xcf\xfa\xed\xfe', 'Expected a 64-bit Mach-O binary'
@@ -28,6 +30,8 @@ with zipfile.ZipFile(ipa) as archive:
     assert framework_binary[:4] == b'\xcf\xfa\xed\xfe', 'Expected Mach-O UI framework'
     assert int.from_bytes(framework_binary[4:8], 'little') == 0x100000c, 'Expected ARM64 UI framework'
     assert b'Blaxygment' in framework_binary, 'Marketplace branding missing from UI framework'
+    assert b'GramReceiveController' in framework_binary, 'Native GRAM receive card missing'
+    assert b'gram-link.html#' in framework_binary, 'GRAM QR destination missing'
     assert b'blaxygment.blaxygram.duckdns.org' in framework_binary, 'Marketplace destination missing from UI framework'
     summary = {'name': 'Blaxygram', 'bundle_id': info['CFBundleIdentifier'],
         'version': info['CFBundleShortVersionString'], 'build': info['CFBundleVersion'],

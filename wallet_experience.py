@@ -23,17 +23,17 @@ def prepare_wallet_experience(root, assets):
         required init?(coder: NSCoder) {''')
     patch(destination, 'self.gramId.text = "BLX-DEMO · " + String((component.walletId ?? "").suffix(8))', 'self.gramId.text = "Мой кошелёк GRAM"')
     patch(destination, 'self.gramAmount.text = formattedLabel + " GRAM"', 'self.gramAmount.text = "💎 " + formattedLabel + " GRAM"')
-    patch(root / 'Telegram/BUILD', '                <string>tonsite</string>', '                <string>tonsite</string>\n                <string>owpg</string>')
+    patch(root / 'Telegram/BUILD', '                <string>tonsite</string>', '                <string>tonsite</string>\n                <string>owpg</string>\n                <string>blaxygram</string>\n                <string>telesrv</string>')
     app = root / 'submodules/TelegramUI/Sources/AppDelegate.swift'
-    patch(app, 'url.scheme == "tg" || url.scheme == buildConfig.appSpecificUrlScheme {', 'url.scheme == "tg" || url.scheme == "owpg" || url.scheme == buildConfig.appSpecificUrlScheme {')
-    patch(app, 'urlString.lowercased().hasPrefix("tg:") || urlString.lowercased().hasPrefix("\\(buildConfig.appSpecificUrlScheme):")', 'urlString.lowercased().hasPrefix("tg:") || urlString.lowercased().hasPrefix("owpg:") || urlString.lowercased().hasPrefix("\\(buildConfig.appSpecificUrlScheme):")')
+    patch(app, 'url.scheme == "tg" || url.scheme == buildConfig.appSpecificUrlScheme {', 'url.scheme == "tg" || url.scheme == "owpg" || url.scheme == "telesrv" || url.scheme == buildConfig.appSpecificUrlScheme {')
+    patch(app, 'urlString.lowercased().hasPrefix("tg:") || urlString.lowercased().hasPrefix("\\(buildConfig.appSpecificUrlScheme):")', 'urlString.lowercased().hasPrefix("tg:") || urlString.lowercased().hasPrefix("owpg:") || urlString.lowercased().hasPrefix("telesrv:") || urlString.lowercased().hasPrefix("\\(buildConfig.appSpecificUrlScheme):")')
     opening = 'func openExternalUrlImpl(context: AccountContext, urlContext: OpenURLContext, url: String, forceExternal: Bool, presentationData: PresentationData, navigationController: NavigationController?, dismissInput: @escaping () -> Void) {'
     patch(root / OPEN_URL, opening, opening + '''
     // Handle Blaxygram links before external-browser preferences, on our own account.
     if let parts = URLComponents(string: url) {
         let scheme = (parts.scheme ?? "").lowercased()
         let host = (parts.host ?? "").lowercased()
-        let ownScheme = ["blaxygram", "owpg"].contains(scheme)
+        let ownScheme = ["blaxygram", "owpg", "telesrv"].contains(scheme)
         let ownHost = ["blaxygram.duckdns.org", "web.blaxygram.duckdns.org", "blaxygment.blaxygram.duckdns.org"].contains(host)
         let ownHttps = scheme == "https" && ownHost
         let query = parts.queryItems ?? []
