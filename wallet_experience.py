@@ -68,6 +68,18 @@ def prepare_wallet_experience(root, assets):
             if (ownScheme && host == "mtproto" && path.isEmpty) || (ownHttps && parts.path == "/mtproto/") {
                 return
             }
+            // Feed other alias commands through the existing native parser.
+            // Never send a registered alias back to iOS and reopen ourselves.
+            if scheme == "owpg" || scheme == "telesrv" {
+                var normalized = parts
+                normalized.scheme = "blaxygram"
+                if let internalUrl = normalized.string {
+                    openExternalUrlImpl(context: context, urlContext: urlContext, url: internalUrl,
+                        forceExternal: false, presentationData: presentationData,
+                        navigationController: navigationController, dismissInput: dismissInput)
+                }
+                return
+            }
         }
     }
 ''')
