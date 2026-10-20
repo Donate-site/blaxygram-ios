@@ -83,3 +83,6 @@ def prepare_wallet_experience(root, assets):
         }
     }
 ''')
+
+    patch(root / 'submodules/TelegramUI/Components/Stars/StarsTransactionsScreen/Sources/StarsTransactionsScreen.swift',
+          '    public func update() {', '    public override func viewDidAppear(_ animated: Bool) {\n        super.viewDidAppear(animated)\n        self.starsContext.load(force: true)\n    }\n\n    public func update() {')

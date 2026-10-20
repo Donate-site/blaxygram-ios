@@ -63,31 +63,31 @@ final class GramReceiveController: UIViewController {
             }
         }
         self.panel.addSubview(self.qr)
-        self.closeButton.setTitle("вњ•", for: .normal)
+        self.closeButton.setTitle("✕", for: .normal)
         self.closeButton.titleLabel?.font = .systemFont(ofSize: 24)
         self.closeButton.tintColor = .white
-        self.closeButton.accessibilityLabel = "Р—Р°РєСЂС‹С‚СЊ"
+        self.closeButton.accessibilityLabel = "Закрыть"
         self.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         self.panel.addSubview(self.closeButton)
-        self.copyButton.setTitle("РљРѕРїРёСЂРѕРІР°С‚СЊ РјРѕР№ Р°РґСЂРµСЃ", for: .normal)
+        self.copyButton.setTitle("Копировать мой адрес", for: .normal)
         self.copyButton.backgroundColor = .white
         self.copyButton.layer.cornerRadius = 18
         self.copyButton.addTarget(self, action: #selector(copyAddress), for: .touchUpInside)
         self.panel.addSubview(self.copyButton)
-        self.buyButton.setTitle("РџРѕРїРѕР»РЅРёС‚СЊ GRAM", for: .normal)
+        self.buyButton.setTitle("Пополнить GRAM", for: .normal)
         self.buyButton.titleLabel?.font = .systemFont(ofSize: 19, weight: .semibold)
         self.buyButton.backgroundColor = .white
         self.buyButton.layer.cornerRadius = 26
         self.buyButton.addTarget(self, action: #selector(buy), for: .touchUpInside)
         self.panel.addSubview(self.buyButton)
-        self.gemButton.setTitle("рџ’Ћ", for: .normal)
+        self.gemButton.setTitle("💎", for: .normal)
         self.gemButton.titleLabel?.font = .systemFont(ofSize: 27)
         self.gemButton.backgroundColor = .white
         self.gemButton.layer.cornerRadius = 12
-        self.gemButton.accessibilityLabel = "РЈРІРµР»РёС‡РёС‚СЊ Р°Р»РјР°Р·"
+        self.gemButton.accessibilityLabel = "Увеличить алмаз"
         self.gemButton.addTarget(self, action: #selector(toggleDiamond), for: .touchUpInside)
         self.panel.addSubview(self.gemButton)
-        self.hint.text = "Р§С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ GRAM, РїРѕРєР°Р¶РёС‚Рµ QR РёР»Рё СЃРєРѕРїРёСЂСѓР№С‚Рµ Р°РґСЂРµСЃ. РќР°Р¶РјРёС‚Рµ РЅР° Р°Р»РјР°Р· вЂ” РµРіРѕ РјРѕР¶РЅРѕ РІСЂР°С‰Р°С‚СЊ РїР°Р»СЊС†РµРј."
+        self.hint.text = "Чтобы получить GRAM, покажите QR или скопируйте адрес. Нажмите на алмаз — его можно вращать пальцем."
         self.hint.textColor = .white
         self.hint.textAlignment = .center
         self.hint.numberOfLines = 0
@@ -124,7 +124,7 @@ final class GramReceiveController: UIViewController {
                 if diamondView.superview == nil {
                     self.panel.addSubview(diamondView)
                     diamondView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleDiamond)))
-                    diamondView.accessibilityLabel = "РђР»РјР°Р·. Р’СЂР°С‰Р°Р№С‚Рµ РїР°Р»СЊС†РµРј, РЅР°Р¶РјРёС‚Рµ РґР»СЏ СѓРјРµРЅСЊС€РµРЅРёСЏ"
+                    diamondView.accessibilityLabel = "Алмаз. Вращайте пальцем, нажмите для уменьшения"
                 }
                 diamondView.frame = CGRect(x: self.qr.center.x - size / 2, y: self.qr.center.y - size / 2, width: size, height: size)
             }
@@ -139,7 +139,7 @@ final class GramReceiveController: UIViewController {
     private func buildRing() {
         self.ring.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         let path = UIBezierPath(roundedRect: self.ring.bounds.insetBy(dx: 4, dy: 4), cornerRadius: 36)
-        let text = Array(self.address + " В· ")
+        let text = Array(self.address + " · ")
         for (index, character) in text.enumerated() {
             let layer = CATextLayer()
             layer.string = String(character)
@@ -172,7 +172,7 @@ final class GramReceiveController: UIViewController {
     @objc private func close() { self.dismiss(animated: true) }
     @objc private func copyAddress() {
         UIPasteboard.general.string = self.address
-        self.copyButton.setTitle("РђРґСЂРµСЃ СЃРєРѕРїРёСЂРѕРІР°РЅ вњ“", for: .normal)
+        self.copyButton.setTitle("Адрес скопирован ✓", for: .normal)
     }
     @objc private func buy() { self.dismiss(animated: true, completion: self.topUp) }
     override func viewDidDisappear(_ animated: Bool) {
