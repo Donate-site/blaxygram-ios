@@ -26,7 +26,7 @@ def prepare(root, assets):
     if revision != SOURCE_REVISION:
         raise RuntimeError(f'Unexpected source revision: {revision}')
     replace(root/'submodules/TelegramCore/Sources/Network/Network.swift',
-            '2: ["10.172.61.102"]', '2: ["193.233.230.31"]')
+            '2: ["10.172.61.102"]', '2: ["31.77.16.230", "193.233.230.31"]')
     replace(root/'submodules/TelegramCore/Sources/Network/Network.swift', 'port: 2398', 'port: 2398')
     key = (assets/'blaxygram-public.pem').read_text().strip()
     if not key.startswith('-----BEGIN RSA PUBLIC KEY-----') or 'PRIVATE' in key:
@@ -47,13 +47,14 @@ def prepare(root, assets):
     migration = '''            MTDatacenterAddressSet *blaxygramSavedAddresses = _datacenterAddressSetById[@2];
             bool blaxygramNeedsMigration = false;
             for (MTDatacenterAddress *address in blaxygramSavedAddresses.addressList) {
-                if ([address.ip isEqualToString:@"10.172.61.102"]) {
+                if ([address.ip isEqualToString:@"10.172.61.102"] || [address.ip isEqualToString:@"193.233.230.31"]) {
                     blaxygramNeedsMigration = true;
                 }
             }
             if (blaxygramNeedsMigration) {
-                MTDatacenterAddress *address = [[MTDatacenterAddress alloc] initWithIp:@"193.233.230.31" port:2398 preferForMedia:false restrictToTcp:true cdn:false preferForProxy:false secret:nil];
-                _datacenterAddressSetById[@2] = [[MTDatacenterAddressSet alloc] initWithAddressList:@[address]];
+                MTDatacenterAddress *address = [[MTDatacenterAddress alloc] initWithIp:@"31.77.16.230" port:2398 preferForMedia:false restrictToTcp:true cdn:false preferForProxy:false secret:nil];
+                MTDatacenterAddress *fallback = [[MTDatacenterAddress alloc] initWithIp:@"193.233.230.31" port:2398 preferForMedia:false restrictToTcp:true cdn:false preferForProxy:false secret:nil];
+                _datacenterAddressSetById[@2] = [[MTDatacenterAddressSet alloc] initWithAddressList:@[address, fallback]];
                 for (MTTransportSchemeKey *schemeKey in [_datacenterManuallySelectedSchemeById allKeys]) {
                     if (schemeKey.datacenterId == 2) {
                         [_datacenterManuallySelectedSchemeById removeObjectForKey:schemeKey];
@@ -66,6 +67,24 @@ def prepare(root, assets):
 '''
     anchor = '            [_apiEnvironment.datacenterAddressOverrides enumerateKeysAndObjectsUsingBlock:'
     replace(context, anchor, migration + anchor)
+
+    # The compatibility gateway advertises its old address to older releases.
+    # New releases prefer Play2Go while retaining that gateway as a fallback.
+    update_anchor = '''- (void)updateAddressSetForDatacenterWithId:(NSInteger)datacenterId addressSet:(MTDatacenterAddressSet *)addressSet forceUpdateSchemes:(bool)forceUpdateSchemes
+{
+'''
+    update_migration = '''    if (datacenterId == 2) {
+        for (MTDatacenterAddress *address in addressSet.addressList) {
+            if ([address.ip isEqualToString:@"193.233.230.31"] && address.port == 2398) {
+                MTDatacenterAddress *primary = [[MTDatacenterAddress alloc] initWithIp:@"31.77.16.230" port:2398 preferForMedia:false restrictToTcp:true cdn:false preferForProxy:false secret:nil];
+                MTDatacenterAddress *fallback = [[MTDatacenterAddress alloc] initWithIp:@"193.233.230.31" port:2398 preferForMedia:false restrictToTcp:true cdn:false preferForProxy:false secret:nil];
+                addressSet = [[MTDatacenterAddressSet alloc] initWithAddressList:@[primary, fallback]];
+                break;
+            }
+        }
+    }
+'''
+    replace(context, update_anchor, update_anchor + update_migration)
 
     # Sideloading profiles may not grant App Groups. Keep main-app data inside
     # its own sandbox in that case; never replace a previously used container.
@@ -167,7 +186,7 @@ def prepare(root, assets):
     prepare_channel_comments(root)
     prepare_gram_wallet(root, assets)
     prepare_wallet_experience(root, assets)
-    print('Prepared Blaxygram, DC2 193.233.230.31:2398, ESign container fallback and saved-address migration, with an unsigned device build.')
+    print('Prepared Blaxygram, DC2 31.77.16.230:2398, ESign container fallback and saved-address migration, with an unsigned device build.')
 
 if __name__ == '__main__':
     prepare(Path(sys.argv[1]).resolve(), Path(__file__).resolve().parent)

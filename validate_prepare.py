@@ -80,7 +80,7 @@ report = {
     'host': 'blaxygment.blaxygram.duckdns.org',
     'generated_localizations': 'PASS; raw templates before interpolation',
     'market_avatar_sha256': hashlib.sha256((assets / 'Blaxygment.png').read_bytes()).hexdigest(),
-    'server': '193.233.230.31:2398',
+    'server': '31.77.16.230:2398',
     'compile_status': 'Not run; requires GitHub macOS runner',
     'macos_icon_resize': 'Skipped on Windows',
     'device_tested': False,
