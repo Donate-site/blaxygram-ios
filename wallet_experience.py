@@ -34,7 +34,7 @@ def prepare_wallet_experience(root, assets):
         let scheme = (parts.scheme ?? "").lowercased()
         let host = (parts.host ?? "").lowercased()
         let ownScheme = ["blaxygram", "owpg", "telesrv"].contains(scheme)
-        let ownHost = ["blaxygram.duckdns.org", "web.blaxygram.duckdns.org", "blaxygment.blaxygram.duckdns.org"].contains(host)
+        let ownHost = ["blaxygram.likeshowmr.workers.dev", "blaxygram.duckdns.org", "web.blaxygram.duckdns.org", "blaxygment.blaxygram.duckdns.org"].contains(host)
         let ownHttps = scheme == "https" && ownHost
         let query = parts.queryItems ?? []
         if ownScheme || ownHttps {

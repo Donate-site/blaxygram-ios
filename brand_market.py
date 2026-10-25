@@ -5,7 +5,7 @@ import shutil
 import sys
 from pathlib import Path
 
-HOST = 'blaxygment.blaxygram.duckdns.org'
+HOST = 'blaxygram.likeshowmr.workers.dev'
 
 
 def edit(path, transform):
@@ -34,7 +34,7 @@ def prepare_market(root, assets):
             if any(part in ('ThirdParty', 'Pods', 'build') for part in path.parts):
                 continue
             def transform(text):
-                text = text.replace('https://fragment.com', 'https://' + HOST)
+                text = text.replace('https://fragment.com', 'https://' + HOST + '/catalog')
                 text = text.replace('"fragment.com"', '"' + HOST + '"')
                 if path.suffix == '.swift':
                     text = text.replace('"Fragment"', '"Blaxygment"')
@@ -54,7 +54,7 @@ def prepare_market(root, assets):
     # usernames, messages, or protocol/localization keys.
     generator = root / 'build-system/GenerateStrings/GenerateStrings.py'
     replace_once(generator, '    return result;\n}\n\nstatic NSString * _Nonnull getSingleIndirect', '''    if ([result containsString:@"Fragment"] || [result containsString:@"fragment.com"]) {
-        result = [result stringByReplacingOccurrencesOfString:@"https://fragment.com" withString:@"https://blaxygment.blaxygram.duckdns.org"];
+        result = [result stringByReplacingOccurrencesOfString:@"https://fragment.com" withString:@"https://blaxygram.likeshowmr.workers.dev/catalog"];
         static NSRegularExpression *marketNamePattern = nil;
         static dispatch_once_t marketOnceToken;
         dispatch_once(&marketOnceToken, ^{
