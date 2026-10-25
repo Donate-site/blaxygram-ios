@@ -186,7 +186,9 @@ def prepare(root, assets):
     prepare_channel_comments(root)
     prepare_gram_wallet(root, assets)
     prepare_wallet_experience(root, assets)
-    print('Prepared Blaxygram, DC2 31.77.16.230:2398, ESign container fallback and saved-address migration, with an unsigned device build.')
+    from cloudflare_transport import prepare_cloudflare_transport
+    prepare_cloudflare_transport(root, assets)
+    print('Prepared Blaxygram with Cloudflare WSS, preserved RSA identity and account container, unsigned device build.')
 
 if __name__ == '__main__':
     prepare(Path(sys.argv[1]).resolve(), Path(__file__).resolve().parent)

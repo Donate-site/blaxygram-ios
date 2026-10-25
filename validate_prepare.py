@@ -17,6 +17,7 @@ from channel_comments import PATHS
 from gram_wallet import PATHS as GRAM_PATHS
 from wallet_experience import PATHS as WALLET_PATHS
 paths = [*PATHS, *GRAM_PATHS, *WALLET_PATHS,
+    'submodules/MtProtoKit/Sources/MTTcpConnection.m',
     'submodules/TelegramPresentationData/Sources/DefaultDayPresentationTheme.swift',
     'submodules/TelegramPresentationData/Sources/DefaultDarkPresentationTheme.swift',
     'submodules/TelegramUIPreferences/Sources/MediaAutoDownloadSettings.swift',

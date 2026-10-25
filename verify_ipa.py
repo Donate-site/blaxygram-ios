@@ -33,6 +33,12 @@ with zipfile.ZipFile(ipa) as archive:
     assert b'GramReceiveController' in framework_binary, 'Native GRAM receive card missing'
     assert b'gram-link.html#' in framework_binary, 'GRAM QR destination missing'
     assert b'blaxygment.blaxygram.duckdns.org' in framework_binary, 'Marketplace destination missing from UI framework'
+    transport = path.removesuffix('Info.plist') + 'Frameworks/MtProtoKitFramework.framework/MtProtoKitFramework'
+    transport_binary = archive.read(transport)
+    assert transport_binary[:4] == b'\xcf\xfa\xed\xfe'
+    assert int.from_bytes(transport_binary[4:8], 'little') == 0x100000c
+    assert b'blaxygram.likeshowmr.workers.dev' in transport_binary
+    assert b'MTBlaxyWebSocket' in transport_binary
     summary = {'name': 'Blaxygram', 'bundle_id': info['CFBundleIdentifier'],
         'version': info['CFBundleShortVersionString'], 'build': info['CFBundleVersion'],
         'platform': info['DTPlatformName'], 'sha256': hashlib.sha256(ipa.read_bytes()).hexdigest(),
