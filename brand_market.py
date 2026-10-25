@@ -5,7 +5,7 @@ import shutil
 import sys
 from pathlib import Path
 
-HOST = 'blaxygram.likeshowmr.workers.dev'
+HOST = 'blaxygram.blaxygram-network.workers.dev'
 
 
 def edit(path, transform):
@@ -54,7 +54,7 @@ def prepare_market(root, assets):
     # usernames, messages, or protocol/localization keys.
     generator = root / 'build-system/GenerateStrings/GenerateStrings.py'
     replace_once(generator, '    return result;\n}\n\nstatic NSString * _Nonnull getSingleIndirect', '''    if ([result containsString:@"Fragment"] || [result containsString:@"fragment.com"]) {
-        result = [result stringByReplacingOccurrencesOfString:@"https://fragment.com" withString:@"https://blaxygram.likeshowmr.workers.dev/catalog"];
+        result = [result stringByReplacingOccurrencesOfString:@"https://fragment.com" withString:@"https://blaxygram.blaxygram-network.workers.dev/catalog"];
         static NSRegularExpression *marketNamePattern = nil;
         static dispatch_once_t marketOnceToken;
         dispatch_once(&marketOnceToken, ^{

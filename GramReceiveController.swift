@@ -51,7 +51,7 @@ final class GramReceiveController: UIViewController {
         self.qr.contentMode = .scaleAspectFit
         self.qr.layer.magnificationFilter = .nearest
         if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(Data(("https://blaxygram.likeshowmr.workers.dev/mini/gram-link.html#" + self.address).utf8), forKey: "inputMessage")
+            filter.setValue(Data(("https://blaxygram.blaxygram-network.workers.dev/mini/gram-link.html#" + self.address).utf8), forKey: "inputMessage")
             filter.setValue("H", forKey: "inputCorrectionLevel")
             if let output = filter.outputImage {
                 let bordered = output.extent.insetBy(dx: -4, dy: -4)

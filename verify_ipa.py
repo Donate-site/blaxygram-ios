@@ -32,12 +32,12 @@ with zipfile.ZipFile(ipa) as archive:
     assert b'Blaxygment' in framework_binary, 'Marketplace branding missing from UI framework'
     assert b'GramReceiveController' in framework_binary, 'Native GRAM receive card missing'
     assert b'gram-link.html#' in framework_binary, 'GRAM QR destination missing'
-    assert b'blaxygram.likeshowmr.workers.dev/catalog' in framework_binary, 'Marketplace destination missing from UI framework'
+    assert b'blaxygram.blaxygram-network.workers.dev/catalog' in framework_binary, 'Marketplace destination missing from UI framework'
     transport = path.removesuffix('Info.plist') + 'Frameworks/MtProtoKitFramework.framework/MtProtoKitFramework'
     transport_binary = archive.read(transport)
     assert transport_binary[:4] == b'\xcf\xfa\xed\xfe'
     assert int.from_bytes(transport_binary[4:8], 'little') == 0x100000c
-    assert b'blaxygram.likeshowmr.workers.dev' in transport_binary
+    assert b'blaxygram.blaxygram-network.workers.dev' in transport_binary
     assert b'MTBlaxyWebSocket' in transport_binary
     summary = {'name': 'Blaxygram', 'bundle_id': info['CFBundleIdentifier'],
         'version': info['CFBundleShortVersionString'], 'build': info['CFBundleVersion'],
@@ -46,7 +46,7 @@ with zipfile.ZipFile(ipa) as archive:
         'source': 'https://github.com/iamxvbaba/gramsrv-Telegram-iOS',
         'source_revision': '16f191d403e3b587578f8f32bae814cce1681853',
         'marketplace': 'Blaxygment',
-        'marketplace_url': 'https://blaxygram.likeshowmr.workers.dev/catalog',
+        'marketplace_url': 'https://blaxygram.blaxygram-network.workers.dev/catalog',
         'runtime_tests': 'Not yet tested on an iPhone'}
     ipa.with_suffix('.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary, indent=2))

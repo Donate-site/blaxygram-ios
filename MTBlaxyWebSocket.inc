@@ -39,7 +39,7 @@
     delegateQueue.maxConcurrentOperationCount = 1;
     delegateQueue.underlyingQueue = _queue;
     _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:delegateQueue];
-    _task = [_session webSocketTaskWithURL:[NSURL URLWithString:@"wss://blaxygram.likeshowmr.workers.dev/apiws"] protocols:@[@"binary"]];
+    _task = [_session webSocketTaskWithURL:[NSURL URLWithString:@"wss://blaxygram.blaxygram-network.workers.dev/apiws"] protocols:@[@"binary"]];
     _task.maximumMessageSize = 16 * 1024 * 1024;
     [_task resume];
     __weak MTBlaxyWebSocket *weakSelf = self;

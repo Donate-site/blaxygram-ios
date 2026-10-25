@@ -78,7 +78,7 @@ report = {
     'source_revision': prepare.SOURCE_REVISION,
     'patch_application': 'PASS against pristine pinned source',
     'marketplace': 'Blaxygment',
-    'host': 'blaxygram.likeshowmr.workers.dev',
+    'host': 'blaxygram.blaxygram-network.workers.dev',
     'generated_localizations': 'PASS; raw templates before interpolation',
     'market_avatar_sha256': hashlib.sha256((assets / 'Blaxygment.png').read_bytes()).hexdigest(),
     'server': '31.77.16.230:2398',
